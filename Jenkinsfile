@@ -8,31 +8,35 @@ pipeline {
     
     }
     
-    stages{
-        
-        stage("Git Checkout"){
-            steps{
-                git branch: 'master', changelog: false, poll: false, url: 'https://github.com/iam-priyam/java-app.git'
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git 'https://github.com/iam-priyam/java.git'
             }
         }
         
-        stage("Compile"){
-            steps{
-                sh "mvn clean compile"
+        stage('Compile') {
+            steps {
+                sh "mvn compile"
             }
         }
         
-         stage("Test Cases"){
-            steps{
+        stage('Test') {
+            steps {
                 sh "mvn test"
             }
         }
         
-         stage("Build"){
-            steps{
-                sh " mvn clean install"
+        stage('Package') {
+            steps {
+                sh "mvn package -DskipTests=true"
             }
         }
         
+        stage('Install') {
+            steps {
+                sh "mvn install -DskipTests=true"
+            }
+        }
     }
 }
